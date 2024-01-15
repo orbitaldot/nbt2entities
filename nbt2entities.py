@@ -4,20 +4,20 @@ import argparse
 
 CMD_BLOCK_LIMIT = 32500
 
-def nbt_load(filename):
+
+def float2mcfloat(i,prec=6):
+    return (str(i)[0:prec] + 'f')
+
+
+def nbt2entities(filename,block_scale=1.0):
     nbt_data = nbtlib.load(filename)
     palette = nbt_data['palette']
-    bbox = {
-        'x': 1,
-        'y': 1,
-        'z': 1
-    }
+    bbox = { 'x': 1, 'y': 1, 'z': 1 }
     data = []
     for block in nbt_data['blocks']:
         pos = block['pos']
         state = block['state'].real
         x,y,z = pos[0].real,pos[1].real,pos[2].real
-
         bbox['x'] = max(bbox['x'], x)
         bbox['y'] = max(bbox['y'], y)
         bbox['z'] = max(bbox['z'], z)
@@ -28,20 +28,12 @@ def nbt_load(filename):
 
         data.append({'block': block_id, 'x': x, 'y': y, 'z': z})
 
-    return {
-        'blocks': data,
-        'bbox': bbox
-    }
+    block_scale = float(block_scale)
 
+    xscale = 1/(bbox['x'] + 1) * block_scale
+    yscale = 1/(bbox['y'] + 1) * block_scale
+    zscale = 1/(bbox['z'] + 1) * block_scale
 
-def float2mcfloat(i,prec=6):
-    return (str(i)[0:prec] + 'f')
-
-
-def make_command(data):
-    xscale = 1/(data['bbox']['x'] + 1)
-    yscale = 1/(data['bbox']['y'] + 1)
-    zscale = 1/(data['bbox']['z'] + 1)
     scale = min(xscale,yscale,zscale)
     
     s = float2mcfloat(scale)
@@ -50,7 +42,7 @@ def make_command(data):
         
     passengers = []
 
-    for block in data['blocks']:
+    for block in data:
         x = float2mcfloat(block['x'] * scale)
         y = float2mcfloat(block['y'] * scale)
         z = float2mcfloat(block['z'] * scale)
@@ -68,7 +60,7 @@ def make_command(data):
     return command
 
 
-def main():
+if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         prog='nbt2entities',
         description='',
@@ -76,12 +68,12 @@ def main():
     )
     parser.add_argument('filename')
     parser.add_argument('-o', '--output_file')
+    parser.add_argument('-s', '--scale')
     parser.add_argument('-c', '--clipboard', action='store_true')
     parser.add_argument('-v', '--verbose', action='store_true')
     args = parser.parse_args()
 
-    data = nbt_load(args.filename)
-    command = make_command(data)
+    command = nbt2entities(args.filename, args.scale if args.scale else 1)
 
     if args.verbose:
         command_length = len(command)
@@ -94,6 +86,3 @@ def main():
         f = open(args.output_file, "w")
         f.write(command)
         f.close()
-
-
-main()
