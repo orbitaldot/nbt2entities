@@ -5,7 +5,7 @@ import argparse
 CMD_BLOCK_LIMIT = 32500
 
 
-def float2mcfloat(i,prec=6):
+def float2mcfloat(i,prec=3):
     return (str(i)[0:prec] + 'f')
 
 
