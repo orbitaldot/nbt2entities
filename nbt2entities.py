@@ -35,9 +35,9 @@ def nbt2entities(filename,block_scale=1.0,offset_x=0.0,offset_y=0.0,offset_z=0.0
 
     block_scale = float(block_scale)
 
-    xscale = 1/(bbox['x'] + 1) * block_scale
-    yscale = 1/(bbox['y'] + 1) * block_scale
-    zscale = 1/(bbox['z'] + 1) * block_scale
+    xscale = 1/(bbox['x']) * block_scale
+    yscale = 1/(bbox['y']) * block_scale
+    zscale = 1/(bbox['z']) * block_scale
 
     scale = min(xscale,yscale,zscale)
     
@@ -74,9 +74,9 @@ if __name__ == '__main__':
     parser.add_argument('filename')
     parser.add_argument('-o', '--output_file')
     parser.add_argument('-s', '--scale')
-    parser.add_argument('-ox', '--offset_x')
-    parser.add_argument('-oy', '--offset_y')
-    parser.add_argument('-oz', '--offset_z') 
+    parser.add_argument('-ox', '--offset_x') # not implemented yet
+    parser.add_argument('-oy', '--offset_y') # not implemented yet
+    parser.add_argument('-oz', '--offset_z')  # not implemented yet
     parser.add_argument('-cb', '--clipboard', action='store_true')
     parser.add_argument('-v', '--verbose', action='store_true')
     args = parser.parse_args()
