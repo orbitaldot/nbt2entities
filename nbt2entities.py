@@ -10,6 +10,17 @@ def float2mcfloat(i,prec=3):
 
 
 def nbt2entities(filename,block_scale=1.0,offset_x=0.0,offset_y=0.0,offset_z=0.0,custom_name="",main_entity="block_display"):
+    """
+    Converts a .nbt file into a command that summons block display entities.
+    Parameters:
+        filename: the .nbt file to convert
+        block_scale: scale in blocks(default: 1.0)
+        offset_x: the x offset of the blocks (default: 0.0)
+        offset_y: the y offset of the blocks (default: 0.0)
+        offset_z: the z offset of the blocks (default: 0.0)
+        custom_name: the custom name of the full model (default: ""). This makes the command significantly longer, so use a short name.
+        main_entity: the main entity to summon (default: "block_display")
+    """
     nbt_data = nbtlib.load(filename)
     bbox = { 'x': 1, 'y': 1, 'z': 1 }
     data = []
@@ -71,10 +82,10 @@ if __name__ == '__main__':
     parser.add_argument('filename')
     parser.add_argument('-o', '--output_file')
     parser.add_argument('-s', '--scale')
-    parser.add_argument('-ox', '--offset_x') # not implemented yet
-    parser.add_argument('-oy', '--offset_y') # not implemented yet
-    parser.add_argument('-oz', '--offset_z')  # not implemented yet
-    parser.add_argument('-cn', '--custom_name') # makes command longer! use a short name
+    parser.add_argument('-ox', '--offset_x') 
+    parser.add_argument('-oy', '--offset_y') 
+    parser.add_argument('-oz', '--offset_z') 
+    parser.add_argument('-cn', '--custom_name') # makes the command longer! use a short name
     parser.add_argument('-e', '--entity')
     parser.add_argument('-cb', '--clipboard', action='store_true')
     parser.add_argument('-v', '--verbose', action='store_true')
