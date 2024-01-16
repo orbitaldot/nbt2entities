@@ -10,6 +10,9 @@ def float2mcfloat(i,prec=3):
 
 
 def nbt2entities(filename,block_scale=1.0,offset_x=0.0,offset_y=0.0,offset_z=0.0):
+
+    # Load & read NBT data
+    
     nbt_data = nbtlib.load(filename)
     bbox = { 'x': 1, 'y': 1, 'z': 1 }
     data = []
@@ -28,6 +31,8 @@ def nbt2entities(filename,block_scale=1.0,offset_x=0.0,offset_y=0.0,offset_z=0.0
         bbox['y'] = max(bbox['y'], y)
         bbox['z'] = max(bbox['z'], z)
 
+    # Begin command generation
+
     block_scale = float(block_scale)
 
     xscale = 1/(bbox['x'] + 1) * block_scale
@@ -39,7 +44,7 @@ def nbt2entities(filename,block_scale=1.0,offset_x=0.0,offset_y=0.0,offset_z=0.0
     s = float2mcfloat(scale)
     O = float2mcfloat(0.0)
     I = float2mcfloat(1.0)
-        
+
     passengers = []
 
     for block in data:
