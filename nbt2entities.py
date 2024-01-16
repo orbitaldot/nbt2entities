@@ -85,7 +85,7 @@ if __name__ == '__main__':
     parser.add_argument('-ox', '--offset_x') 
     parser.add_argument('-oy', '--offset_y') 
     parser.add_argument('-oz', '--offset_z') 
-    parser.add_argument('-cn', '--custom_name') # makes the command longer! use a short name
+    parser.add_argument('-cn', '--custom_name')
     parser.add_argument('-e', '--entity')
     parser.add_argument('-cb', '--clipboard', action='store_true')
     parser.add_argument('-v', '--verbose', action='store_true')
