@@ -9,7 +9,7 @@ def float2mcfloat(i,prec=3):
     return (str(i)[0:prec] + 'f')
 
 
-def nbt2entities(filename,block_scale=1.0,offset_x=0.0,offset_y=0.0,offset_z=0.0):
+def nbt2entities(filename,block_scale=1.0,offset_x=0.0,offset_y=0.0,offset_z=0.0,custom_name=""):
 
     # Load & read NBT data
     
@@ -57,8 +57,14 @@ def nbt2entities(filename,block_scale=1.0,offset_x=0.0,offset_y=0.0,offset_z=0.0
         transform += f"{O},{s},{O},{y},"
         transform += f"{O},{O},{s},{z},"
         transform += f"{O},{O},{O},{I}"
-   
-        passengers.append(f"{{id:\"minecraft:block_display\",block_state:{{Name:\"{block['block']}\",Properties:{{}}}},transformation:[{transform}]}}")
+
+        props = {
+            'name': ''
+        }
+        if custom_name != "":
+            props['name'] = f'CustomName:"{custom_name}"'
+            
+        passengers.append(f"{{id:\"minecraft:block_display\",block_state:{{Name:\"{block['block']}\",Properties:{{{props['name']}}},transformation:[{transform}]}}")
 
     command = f'summon block_display ~ ~1 ~ {{CustomName:\"skyblock\",Passengers:[{','.join(passengers)}]}}'
 
@@ -77,6 +83,7 @@ if __name__ == '__main__':
     parser.add_argument('-ox', '--offset_x') # not implemented yet
     parser.add_argument('-oy', '--offset_y') # not implemented yet
     parser.add_argument('-oz', '--offset_z')  # not implemented yet
+    parser.add_argument('-cn', '--custom_name')
     parser.add_argument('-cb', '--clipboard', action='store_true')
     parser.add_argument('-v', '--verbose', action='store_true')
     args = parser.parse_args()
@@ -86,7 +93,8 @@ if __name__ == '__main__':
         "block_scale": args.scale,
         "offset_x": args.offset_x,
         "offset_y": args.offset_y,
-        "offset_z": args.offset_z
+        "offset_z": args.offset_z,
+        "custom_name": args.custom_name
     }
     not_none_params = {k:v for k, v in params.items() if v is not None}
     command = nbt2entities(**not_none_params)
