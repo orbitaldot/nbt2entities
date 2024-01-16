@@ -5,7 +5,7 @@ import argparse
 CMD_BLOCK_LIMIT = 32500
 
 
-def float2mcfloat(i,prec=3):
+def float2mcfloat(i,prec=6):
     return (str(i)[0:prec] + 'f')
 
 
@@ -42,6 +42,7 @@ def nbt2entities(filename,block_scale=1.0,offset_x=0.0,offset_y=0.0,offset_z=0.0
     xscale = 1/(bbox['x'] + 1) * block_scale
     yscale = 1/(bbox['y'] + 1) * block_scale
     zscale = 1/(bbox['z'] + 1) * block_scale
+
     scale = min(xscale,yscale,zscale)
     
     s = float2mcfloat(scale)
