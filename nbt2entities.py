@@ -9,7 +9,7 @@ def float2mcfloat(i,prec=3):
     return (str(i)[0:prec] + 'f')
 
 
-def nbt2entities(filename,block_scale=1.0):
+def nbt2entities(filename,block_scale=1.0,offset_x=0.0,offset_y=0.0,offset_z=0.0):
     nbt_data = nbtlib.load(filename)
     palette = nbt_data['palette']
     bbox = { 'x': 1, 'y': 1, 'z': 1 }
@@ -69,11 +69,22 @@ if __name__ == '__main__':
     parser.add_argument('filename')
     parser.add_argument('-o', '--output_file')
     parser.add_argument('-s', '--scale')
-    parser.add_argument('-c', '--clipboard', action='store_true')
+    parser.add_argument('-ox', '--offset_x')
+    parser.add_argument('-oy', '--offset_y')
+    parser.add_argument('-oz', '--offset_z') 
+    parser.add_argument('-cb', '--clipboard', action='store_true')
     parser.add_argument('-v', '--verbose', action='store_true')
     args = parser.parse_args()
-
-    command = nbt2entities(args.filename, args.scale if args.scale else 1)
+    
+    params = {
+        "filename": args.filename,
+        "block_scale": args.scale,
+        "offset_x": args.offset_x,
+        "offset_y": args.offset_y,
+        "offset_z": args.offset_z
+    }
+    not_none_params = {k:v for k, v in params.items() if v is not None}
+    command = nbt2entities(**not_none_params)
 
     if args.verbose:
         command_length = len(command)
