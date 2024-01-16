@@ -11,22 +11,22 @@ def float2mcfloat(i,prec=3):
 
 def nbt2entities(filename,block_scale=1.0,offset_x=0.0,offset_y=0.0,offset_z=0.0):
     nbt_data = nbtlib.load(filename)
-    palette = nbt_data['palette']
     bbox = { 'x': 1, 'y': 1, 'z': 1 }
     data = []
+    
     for block in nbt_data['blocks']:
-        pos = block['pos']
         state = block['state'].real
-        x,y,z = pos[0].real,pos[1].real,pos[2].real
-        bbox['x'] = max(bbox['x'], x)
-        bbox['y'] = max(bbox['y'], y)
-        bbox['z'] = max(bbox['z'], z)
-        block_id = palette[state]['Name']
-
+        block_id = nbt_data['palette'][state]['Name']
         if block_id == 'minecraft:air':
             continue
 
+        x, y, z = block['pos'][0].real, block['pos'][1].real, block['pos'][2].real
+
         data.append({'block': block_id, 'x': x, 'y': y, 'z': z})
+
+        bbox['x'] = max(bbox['x'], x)
+        bbox['y'] = max(bbox['y'], y)
+        bbox['z'] = max(bbox['z'], z)
 
     block_scale = float(block_scale)
 
