@@ -74,7 +74,7 @@ def nbt2entities(filename,block_scale=1.0,offset_x=0.0,offset_y=0.0,offset_z=0.0
     return command
 
 
-if __name__ == '__main__':
+def __main__():
     parser = argparse.ArgumentParser(
         prog='nbt2entities',
         description='',
